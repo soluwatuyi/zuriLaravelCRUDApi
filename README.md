@@ -1,1 +1,1 @@
-**[Deployment link](http://zuri-crudusers.herokuapp.com/)**
+**[Deployment link](http://zuri-crudapi.herokuapp.com/)**
