@@ -6,17 +6,14 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
     public function getUsers()
     {
         $user = User::all();
-        if($user->count() == 0) {
-            return response()->json([
-                'error' => 'No user found'
-            ]);
-        }
+
         return response()->json([
             'success' => $user
         ]);
@@ -38,7 +35,8 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => $request->input('password')
+            'password' => $request->input('password'),
+            'api_token' => Str::random(60)
         ]);
         return response()->json([
             'success' => $user
@@ -99,9 +97,8 @@ class UserController extends Controller
             ]);
         } else {
             if($user->password === $request->input('password')) {
-                $request->session()->regenerate();
                 return response()->json([
-                    'success' => $request->session()->getId()
+                    'success' => $user->api_token
                 ]);
             } else {
                 return response()->json([
